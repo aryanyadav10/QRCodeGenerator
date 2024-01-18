@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import "./App.css";
 
 function App() {
+  const [size, setSize] = useState("250");
   const [text, setText] = useState("");
   const qrCodeRef = useRef(null);
 
@@ -22,21 +23,52 @@ function App() {
     setText(e.target.value);
   }
   return (
-    <div className="App">
-      <header className="App-header">
+    <>
+      <div className="navbar">
         <h1>QR Code Generator</h1>
-        <div ref={qrCodeRef}>
-          <QRCode value={text} size={"300px"} />
+      </div>
+      <div className="container">
+        <div className="inputs">
+          <div className="text-input">
+            <label>Enter Your text here : </label>
+            <>
+              <input
+                type="text"
+                value={text}
+                onChange={(e) => handleChange(e)}
+              />
+            </>
+          </div>
+          <div className="size-input">
+            <label>Set size of QR code : </label>
+            <select
+              id="sizes"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            >
+              <option value="200">200</option>
+              <option value="250" selected>
+                250
+              </option>
+              <option value="300">300</option>
+            </select>
+          </div>
+          <div className="download">
+            <button onClick={downloadQrCode}>Download</button>
+          </div>
         </div>
-        <div style={{ margin: "20px" }}>
-          <label>Enter Your text here : </label>
-          <input type="text" value={text} onChange={(e) => handleChange(e)} />
+        <div className="qrcode">
+          <div className="live">
+            <h2>Live Preview</h2>
+          </div>
+          <div className="qr">
+            <div ref={qrCodeRef}>
+              <QRCode value={text} size={`${size}px`} />
+            </div>
+          </div>
         </div>
-        <button style={{ padding: "2.5px 10px" }} onClick={downloadQrCode}>
-          Download
-        </button>
-      </header>
-    </div>
+      </div>
+    </>
   );
 }
 export default App;
